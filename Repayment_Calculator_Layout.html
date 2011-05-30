@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=hz-gb-2312">
+<style type="text/css">
+div{
+	font-family:Calibri;
+	}
+#calculator{
+	border:2px inherit;
+	width:650px;
+	height:500px;
+	background:#900;
+	border-radius:20px;
+	-moz-border-radius:20px; /* Firefox 3.6 and earlier */
+	margin-left:10px;
+	margin-top:15px;
+	}
+#context{
+	margin-left:11px;
+	}
+#detail,#result{
+	border:solid 4px #999;
+	background:#CCC;
+	border-radius:20px;
+	-moz-border-radius:20px;
+	height:470px;
+	margin-top:10px;}
+#detail{
+	width:350px;
+	}
+#result{
+	width:260px;
+	margin-right:11px;
+	}
+#_detail_title{
+	font-size:17px;
+	margin-left:10px;
+	margin-top:20px;
+	}
+#_amount{
+	margin-top:20px;}
+#_amount_title{
+	margin-top:15px;}
+._left_text{
+	margin-left:15px;
+	font-size:14px;}
+#_mortgage{
+	margin-top:85px;}
+#_interest_rate{
+	margin-top:165px;}
+#_RFrequency{
+	margin-top:245px;}
+#_RType{
+	margin-top:285px;}
+#_calculating{
+	margin-top:360px;
+	margin-left:10px;}
+._right_text{
+	margin-left:8px;
+	font-size:14px;}
+#_image{
+	margin-left:8px;
+	width:246px;
+	height:200px;
+	background-color:#FFF;}
+</style>
+<title>Mortgage Repayments Calculator</title>
+</head>
+
+<body>
+	<div id="calculator">
+        <div id="context">
+    		<div id="detail" style="float:left;">
+            	<div id="_detail_title">
+                	Your loan scenario
+                </div>
+            	<div id="_amount">
+                	<div id="_amount_title" class="_left_text" style="float:left;">
+                    Loan amount:
+                    </div>
+                    <div id="_amount_box" style="float:right;">
+                    $&nbsp;<input type="text" name="amount" size="13" style="margin-right:59px; margin-top:10px;" />
+                    </div>
+                </div>
+                <div id="_mortgage">
+                	<div id="_mortgage_title" class="_left_text" style="float:left;">
+                    Mortgage term you prefer<br /> (0~~40)
+                    </div>
+                    <div id="_mortgage_box"  style="float:right; margin-right:12px;">
+                    <input type="number" name="mortgage_term" min="0"max="40" size="13"/>year(s)
+                    </div>
+                </div>
+                <div id="_interest_rate">
+                	<div id="_interest_rate_title" class="_left_text" style="float:left;">
+                    Interest rate you prefer<br /> (3.00~~8.00)
+                    </div>
+                    <div id="_interest_rate_box" style="float:right; margin-right:46px;">
+                    <input type="number" name="interest_rate" min="3.00" max="8.00" step="0.01" size="13" />%
+                    </div>
+                </div>
+                <div id="_RFrequency">
+               	 	<div id="_RFrequency_title"  class="_left_text" style="float:left;">
+                    Repayment frequency
+                    </div>
+                    <div id="_RFrequency_box" style="float:right;">
+                        <select id="_RFrequency_value" style="width:136px; margin-right:37px; font-family:Calibri;">
+                            <option>Weekly</option>
+                            <option>Fortnightly</option>
+                            <option>Monthly</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="_RType">
+                	<div id="_RType_title"  class="_left_text" style="float:left;">
+                    Repayment type
+                    </div>
+                    <div id="_RType_box" style="float:right;">
+                        <select id="_RType_value" style="margin-right:37px; font-family:Calibri;">
+                            <option>Principal & Interest</option>
+                            <option>Interest Only</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="_calculating">
+                	<input type="image" src="Start_Calculating.png">
+                </div>
+            </div>
+            <div id="result" style="float:right;">
+            	<div id="_result_title" class="_right_text" style="margin-top:10px;">
+                Your Loan Scenario Results
+                </div>
+                <div id="_difference_color" class="_right_text">
+                <img src="Home_Loan_Color.png">&nbsp;Home loan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Include_Interest.png">&nbsp;Including interest
+                </div>
+                <div id="_image">
+                </div>
+                <div id="_year_bar">
+                </div>
+                <div id="_mortgage_repayment_title">
+                </div>
+                <div id="_mortgage_repayment_result">
+                </div>
+                <div id="_total_repayment_title">
+                </div>
+                <div id="_total_repayment_result">
+                </div>
+                <div id="_total_repayment_bar">
+                </div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>
