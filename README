@@ -5,5 +5,6 @@ Example can be found on : http://www.abacushomeloans.com.au/Calculators/mortgage
 Avoid use Flash
 Use Jquery and HTML(5) 
 
-change from my laptop
-committed by Tortorisegit
+Work so far:
+
+Now we have the layout of the calculator. we need to integrate jquery to implement the visualization
