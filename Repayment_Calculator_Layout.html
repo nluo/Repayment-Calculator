@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=hz-gb-2312">
+
 <style type="text/css">
 div{
 	font-family:Calibri;
@@ -69,13 +70,39 @@ div{
 </head>
 
 <body>
+
+<script type="text/javascript">
+function cal_repayment(amount,mortgage,interest,frequency,rtype){
+	var payment=0;
+	var period=0;
+	var selected;
+	if (frequency=="Weekly"){
+		period=52;
+		selected="weekly";
+	}
+	else if (frequency=="Fortnightly"){
+		period=26;
+		selected="fortunightly";
+	}
+	else if (frequency=="Monthly"){
+		period=12;
+		selected="monthly";
+	}
+	var a=interest/(period*100);
+	var power=mortgage*period;
+	payment=Math.round(amount*a*Math.pow((1+a),power)/(Math.pow((1+a),power)-1));
+	document.getElementById("_mortgage_repayment_pay").innerHTML=payment;
+	document.getElementById("_mortgage_repayment_select").innerHTML=selected;
+}
+</script>
 	<div id="calculator">
         <div id="context">
     		<div id="detail" style="float:left;">
+            <form>
             	<div id="_detail_title">
                 	Your loan scenario
                 </div>
-                <form>
+                
             	<div id="_amount">
                 	<div id="_amount_title" class="_left_text" style="float:left;">
                     Loan amount:
@@ -89,7 +116,7 @@ div{
                     Mortgage term you prefer<br /> (0~~40)
                     </div>
                     <div id="_mortgage_box"  style="float:right; margin-right:12px;">
-                    <input type="number" name="mortgage_term" min="0"max="40" size="13"/>year(s)
+                    <input type="number" name="mortgage" min="0"max="40" size="13"/>year(s)
                     </div>
                 </div>
                 <div id="_interest_rate">
@@ -97,7 +124,7 @@ div{
                     Interest rate you prefer<br /> (3.00~~8.00)
                     </div>
                     <div id="_interest_rate_box" style="float:right; margin-right:46px;">
-                    <input type="number" name="interest_rate" min="3.00" max="8.00" step="0.01" size="13" />%
+                    <input type="number" name="interest" min="3.00" max="8.00" step="0.01" size="13" />%
                     </div>
                 </div>
                 <div id="_RFrequency">
@@ -105,7 +132,7 @@ div{
                     Repayment frequency
                     </div>
                     <div id="_RFrequency_box" style="float:right;">
-                        <select id="_RFrequency_value" style="width:136px; margin-right:37px; font-family:Calibri;">
+                        <select id="_RFrequency_value" name="frequency" style="width:136px; margin-right:37px; font-family:Calibri;">
                             <option>Weekly</option>
                             <option>Fortnightly</option>
                             <option>Monthly</option>
@@ -117,16 +144,15 @@ div{
                     Repayment type
                     </div>
                     <div id="_RType_box" style="float:right;">
-                        <select id="_RType_value" style="margin-right:37px; font-family:Calibri;">
+                        <select id="_RType_value" name="rtype" style="margin-right:37px; font-family:Calibri;">
                             <option>Principal & Interest</option>
                             <option>Interest Only</option>
                         </select>
                     </div>
                 </div>
                 <div id="_calculating">
-                	<input type="image" src="Start_Calculating.png">
+                	<input id="Start_Calculating" type="image" src="Start_Calculating.png" onmousedown="cal_repayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)"></form>
                 </div>
-                </form>
             </div>
             <div id="result" style="float:right;">
             	<div id="_result_title" class="_right_text" style="margin-top:10px;">
@@ -138,10 +164,13 @@ div{
                 <div id="_image">
                 </div>
                 <div id="_year_bar">
+                
                 </div>
                 <div id="_mortgage_repayment_title">
+                Your <span id="_mortgage_repayment_select"></span> mortgage repayments
                 </div>
                 <div id="_mortgage_repayment_result">
+                <h2><span id="_mortgage_repayment_pay"></span></h2>
                 </div>
                 <div id="_total_repayment_title">
                 </div>
