@@ -56,7 +56,7 @@ div{
 	margin-top:285px;}
 #_calculating{
 	margin-top:360px;
-	margin-left:10px;}
+	margin-left:100px;}
 ._right_text{
 	margin-left:8px;
 	font-size:14px;}
@@ -65,36 +65,45 @@ div{
 	width:246px;
 	height:200px;
 	background-color:#FFF;}
+#_mortgage_repayment_result{
+	margin-left:10px;
+	margin-top:50px;
+	font-size:10px;}
 </style>
+<script type="text/javascript">
+function calRepayment(str1,str2,str3,str4,str5)
+{
+	var xmlhttp;
+	if (str1.length==0&&str2.length==0&&str3.length==0&&str4.length==0&&str5.length==0)
+  		{ 
+  			document.getElementById("_mortgage_repayment_pay").innerHTML="";
+  			return;
+  		}
+	if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+	else
+  		{// code for IE6, IE5
+  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+	xmlhttp.onreadystatechange=function()
+  		{
+  			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    			{
+    				document.getElementById("_mortgage_repayment_pay").innerHTML=xmlhttp.responseText;
+    			}
+  		}
+	xmlhttp.open("GET","Calculate_repayment.php?amount="+str1+"&mortgage="+str2+"&interest="+str3+"&frequency="+str2+"&rtype="+str2,true);
+	xmlhttp.send();
+}
+</script>
 <title>Mortgage Repayments Calculator</title>
 </head>
 
 <body>
 
-<script type="text/javascript">
-function cal_repayment(amount,mortgage,interest,frequency,rtype){
-	var payment=0;
-	var period=0;
-	var selected;
-	if (frequency=="Weekly"){
-		period=52;
-		selected="weekly";
-	}
-	else if (frequency=="Fortnightly"){
-		period=26;
-		selected="fortunightly";
-	}
-	else if (frequency=="Monthly"){
-		period=12;
-		selected="monthly";
-	}
-	var a=interest/(period*100);
-	var power=mortgage*period;
-	payment=Math.round(amount*a*Math.pow((1+a),power)/(Math.pow((1+a),power)-1));
-	document.getElementById("_mortgage_repayment_pay").innerHTML=payment;
-	document.getElementById("_mortgage_repayment_select").innerHTML=selected;
-}
-</script>
+
 	<div id="calculator">
         <div id="context">
     		<div id="detail" style="float:left;">
@@ -151,7 +160,8 @@ function cal_repayment(amount,mortgage,interest,frequency,rtype){
                     </div>
                 </div>
                 <div id="_calculating">
-                	<input id="Start_Calculating" type="image" src="Start_Calculating.png" onmousedown="cal_repayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)"></form>
+                <button type="button" id="button1" onClick="calRepayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
+                </form>
                 </div>
             </div>
             <div id="result" style="float:right;">
@@ -165,9 +175,6 @@ function cal_repayment(amount,mortgage,interest,frequency,rtype){
                 </div>
                 <div id="_year_bar">
                 
-                </div>
-                <div id="_mortgage_repayment_title">
-                Your <span id="_mortgage_repayment_select"></span> mortgage repayments
                 </div>
                 <div id="_mortgage_repayment_result">
                 <h2><span id="_mortgage_repayment_pay"></span></h2>
