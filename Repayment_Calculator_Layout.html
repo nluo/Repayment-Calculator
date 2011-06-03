@@ -94,7 +94,7 @@ function calRepayment(str1,str2,str3,str4,str5)
     				document.getElementById("_mortgage_repayment_pay").innerHTML=xmlhttp.responseText;
     			}
   		}
-	xmlhttp.open("GET","Calculate_repayment.php?amount="+str1+"&mortgage="+str2+"&interest="+str3+"&frequency="+str2+"&rtype="+str2,true);
+	xmlhttp.open("GET","Calculate_repayment.php?amount="+str1+"&mortgage="+str2+"&interest="+str3+"&frequency="+str4+"&rtype="+str5,true);
 	xmlhttp.send();
 }
 </script>
