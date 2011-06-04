@@ -45,8 +45,10 @@ $(function () {
                    lines: { show: true },
                    points: { show: false }
                },
-               grid: { hoverable: true, clickable: false},
-               yaxis: { min: 0, max: 600000 }
+               grid: { hoverable: true, clickable: true},
+               yaxis: { mode:" money", tickDecimals: 0, },
+			   y2axis: { tickDecimals: 0 },
+			   legend: { position: 'nw' }
              });
 
     function showTooltip(x, y, contents) {
@@ -61,14 +63,18 @@ $(function () {
             opacity: 0.80
         }).appendTo("body").fadeIn(200);
     }
-
+	function formatter(val, axis) {
+															return (val / 1000000).toFixed(axis.tickDecimals) + " K";
+														}
     var previousPoint = null;
     $("#placeholder").bind("plothover", function (event, pos, item) {
-        $("#x").text(pos.x.toFixed(0));
-        $("#y").text(pos.y.toFixed(0));
-
+        //$("#x").text(pos.x.toFixed(2));
+        //$("#y").text(pos.y.toFixed(2));
+		$("#x").text(item.datapoint[0]);
+		$("#y").text(item.datapoint[1]);
         if ($("#enableTooltip:checked").length > 0) {
             if (item) {
+				
                 if (previousPoint != item.dataIndex) {
                     previousPoint = item.dataIndex;
                     
