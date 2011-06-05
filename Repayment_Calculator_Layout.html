@@ -60,7 +60,7 @@ div{
 ._right_text{
 	margin-left:8px;
 	font-size:14px;}
-#_image{
+#placeholder{
 	margin-left:8px;
 	width:246px;
 	height:200px;
@@ -69,7 +69,19 @@ div{
 	margin-left:10px;
 	margin-top:50px;
 	font-size:10px;}
+#_total_repayment_bar{
+	margin-left:10px;
+	border:#0F0 solid thin;
+	width:200px;
+	height:20px;
+	}
+#_box{
+	background-color:#0F0;
+	height:20px;
+	width:0px;}
 </style>
+<script type="text/javascript" src="flot/jquery.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.js"></script>
 <script type="text/javascript">
 function calRepayment(str1,str2,str3,str4,str5)
 {
@@ -97,6 +109,13 @@ function calRepayment(str1,str2,str3,str4,str5)
 	xmlhttp.open("GET","Calculate_repayment.php?amount="+str1+"&mortgage="+str2+"&interest="+str3+"&frequency="+str4+"&rtype="+str5,true);
 	xmlhttp.send();
 }
+
+$(document).ready(function(){
+  $("#button1").click(function(){
+	$("#placeholder").hide();
+    $("#placeholder").slideDown();
+  });
+});
 </script>
 <title>Mortgage Repayments Calculator</title>
 </head>
@@ -160,7 +179,7 @@ function calRepayment(str1,str2,str3,str4,str5)
                     </div>
                 </div>
                 <div id="_calculating">
-                <button type="button" id="button1" onClick="calRepayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
+                <button type="button" id="button1" onClick="calRepayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value);drawgraph(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
                 </form>
                 </div>
             </div>
@@ -171,7 +190,52 @@ function calRepayment(str1,str2,str3,str4,str5)
                 <div id="_difference_color" class="_right_text">
                 <img src="Home_Loan_Color.png">&nbsp;Home loan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Include_Interest.png">&nbsp;Including interest
                 </div>
-                <div id="_image">
+                <div id="placeholder">
+                <script type="text/javascript">
+				function drawgraph(amount,mortgage,interest,frequency,rtype){
+					$(function(){
+						var payment=0,period=0,result=[];
+						if (frequency=="Weekly"){
+							period=52;
+						}
+						else if (frequency=="Fortnightly"){
+							period=26;
+						}
+						else if (frequency=="Monthly"){
+							period=12;
+						}
+						var a=interest/(period*100);
+						var power=mortgage*period;
+						payment=Math.round(amount*a*Math.pow((1+a),power)/(Math.pow((1+a),power)-1));
+						var total_repayment=payment*mortgage*period;
+						for (var i=0;i<=mortgage;i++){
+							result.push([i,total_repayment-i*payment*period]);
+							}
+							
+						var plot=$.plot($("#placeholder"), 
+						[ {data: result,
+						    color: "#06f206",
+						   lines: {  show: true, fill: true } }], { 
+							series:{
+								lines: { show:true},
+								points: { show:false}
+								},
+							grid: { hoverable: true, clickable: true},
+							xaxis: { min: 0, max: mortgage},
+							yaxis: { min: 0, max: total_repayment,tickDecimals:0 } 
+							});
+						
+						
+						$("#placeholder").bind("plothover", function (event, pos, item) {
+							/*$("#x").text(item.datapoint[0]);
+							$("#y").text(item.datapoint[1]);*/
+							var test=item.datapoint[1]/total_repayment*200;
+							$("#_box").width(test);
+						});
+						});
+						
+				}
+				</script>
                 </div>
                 <div id="_year_bar">
                 
@@ -184,6 +248,7 @@ function calRepayment(str1,str2,str3,str4,str5)
                 <div id="_total_repayment_result">
                 </div>
                 <div id="_total_repayment_bar">
+                <div id="_box"></div>
                 </div>
             </div>
         </div>
