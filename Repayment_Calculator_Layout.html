@@ -122,8 +122,8 @@ $(document).ready(function(){
 <script type="text/javascript">
 				function drawgraph(amount,mortgage,interest,frequency,rtype){
 					
-					//$(function(){
-						var payment=0,period=0,result=[];
+					$(function(){
+						var payment=0,period=0,result=[],result2=[];
 						if (frequency=="Weekly"){
 							period=52;
 						}
@@ -142,10 +142,28 @@ $(document).ready(function(){
 							result.push([i,total_repayment-i*payment*period]);
 							}
 						
+						for (var j=0;j<=power;j++){
+							if (j%period==0){
+								var a1=Math.pow((1+a),j)*amount;
+								var a2=Math.pow((1+a),j)-1;
+								var a3=a2*payment/a;
+								var a4=a1-a3;
+								result2.push([j/period,Math.round(a4)]);
+								}
+								
+							}
+						
 						$.plot($("#placeholder"), 
-						[ {data: result,
+						[ {
+							data: result,
 						    color: "#06f206",
-						   lines: {  show: true, fill: true } }], { 
+						   lines: {  show: true, fill: true } 
+						   },
+						   {
+							   data: result2,
+							   color:"#028802",
+							   lines: {  show: true, fill: true } 
+						   }], { 
 							series:{
 								lines: { show:true},
 								points: { show:false}
@@ -157,12 +175,12 @@ $(document).ready(function(){
 						
 						
 						$("#placeholder").bind("plothover", function (event, pos, item) {
-							/*$("#x").text(item.datapoint[0]);
-							$("#y").text(item.datapoint[1]);*/
+							//$("#x").text(item.datapoint[0]);
+							//$("#y").text(item.datapoint[1]);
 							var test=item.datapoint[1]/total_repayment*200;
 							$("#_box").width(test);
 						});
-						//});
+						});
 						
 				}
 				</script>
@@ -185,23 +203,23 @@ $(document).ready(function(){
                     Loan amount:
                     </div>
                     <div id="_amount_box" style="float:right;">
-                    $&nbsp;<input type="text" name="amount" size="13" style="margin-right:59px; margin-top:10px;" />
+                    $&nbsp;<input type="text" name="amount" size="13" value="50000" style="margin-right:59px; margin-top:10px;" />
                     </div>
                 </div>
                 <div id="_mortgage">
                 	<div id="_mortgage_title" class="_left_text" style="float:left;">
-                    Mortgage term you prefer<br /> (0~~40)
+                    Mortgage term you prefer<br /> (0~40)
                     </div>
                     <div id="_mortgage_box"  style="float:right; margin-right:12px;">
-                    <input type="number" name="mortgage" min="0"max="40" size="13"/>year(s)
+                    <input type="number" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
                     </div>
                 </div>
                 <div id="_interest_rate">
                 	<div id="_interest_rate_title" class="_left_text" style="float:left;">
-                    Interest rate you prefer<br /> (3.00~~8.00)
+                    Interest rate you prefer<br /> (3.00~8.00)
                     </div>
                     <div id="_interest_rate_box" style="float:right; margin-right:46px;">
-                    <input type="number" name="interest" min="3.00" max="8.00" step="0.01" size="13" />%
+                    <input type="number" name="interest" min="3.00" max="8.00" step="0.01" value="6" size="13" />%
                     </div>
                 </div>
                 <div id="_RFrequency">
