@@ -131,6 +131,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 				function drawgraph(amount,mortgage,interest,frequency,rtype){
 					var payment=0,period=0,result1=[],result2=[];
+					
 					$(function(){
 						
 						if (frequency=="Weekly"){
@@ -147,21 +148,32 @@ $(document).ready(function(){
 						var power=mortgage*period;
 						payment=amount*a*Math.pow((1+a),power)/(Math.pow((1+a),power)-1);
 						var total_repayment=payment*mortgage*period;
+						var interest_only_payment=amount*a;
+						var interest_only_total_repayment=1*amount+interest_only_payment*period*mortgage;
 						for (var i=0;i<=mortgage;i++){
-							result1.push([i,Math.round(total_repayment-i*payment*period)]);
+							if (rtype=="Principal & Interest"){
+								result1.push([i,Math.round(total_repayment-i*payment*period)]);
+							}
+							else if (rtype=="Interest Only"){
+								result1.push([i,Math.round(interest_only_total_repayment-i*interest_only_payment*period)])}
 							}
 						
 						for (var j=0;j<=power;j++){
-							if (j%period==0){
-								var a1=Math.pow((1+a),j)*amount;
-								var a2=Math.pow((1+a),j)-1;
-								var a3=a2*payment/a;
-								var a4=a1-a3;
-								result2.push([j/period,Math.round(a4)]);
+							if (rtype=="Principal & Interest"){
+								if (j%period==0){
+									var a1=Math.pow((1+a),j)*amount;
+									var a2=Math.pow((1+a),j)-1;
+									var a3=a2*payment/a;
+									var a4=a1-a3;
+									result2.push([j/period,Math.round(a4)]);
 								}
-								
 							}
-						
+							else if (rtype=="Interest Only"){
+								if (j%period==0){
+									result2.push([j/period,amount]);
+								}	
+							}
+						}
 						$.plot($("#placeholder"), 
 						[ {
 							data: result1,
@@ -178,8 +190,8 @@ $(document).ready(function(){
 								points: { show:false}
 								},
 							grid: { hoverable: true, clickable: true},
-							xaxis: { min: 0, max: mortgage},
-							yaxis: { min: 0, max: total_repayment,tickDecimals:0, position:"right" } 
+							xaxis: { min: 0},
+							yaxis: { min: 0, tickDecimals:0, position:"right" } 
 							});
 						
 						
@@ -192,16 +204,20 @@ $(document).ready(function(){
 								value2=1;}
 							var test=value2/value1*100;
 							var value=value2/value1*250;
-							$("#x").text(Math.round(test)+"% home laon");
-							$("#y").text(Math.round(100-test)+"% interest");
-							//$("#x").text(item.datapoint[0]);
-							//$("#y").text(item.datapoint[1]);
-							$("#z").text(Math.round(test));
-							$("#_box").width(value);
+							if (rtype=="Principal & Interest"){
+								$("#x").text(Math.round(test)+"% home laon");
+								$("#y").text(Math.round(100-test)+"% interest");
+								$("#_box").width(value);
+							}
+							else if(rtype=="Interest Only"){
+								$("#x").text("0% home loan");
+								$("#y").text("100% interest");
+								$("#_box").width(0);
+								}
 							$("#_remain_year").text(value3);
 						});
 						});
-						
+					
 				}
 				</script>
 <title>Mortgage Repayments Calculator</title>
