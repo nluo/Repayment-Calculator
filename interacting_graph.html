@@ -7,6 +7,7 @@
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="flot/jquery.flot.crosshair.js"></script>
  </head>
     <body>
     <h1>Flot Modified Examples</h1>
@@ -45,10 +46,11 @@ $(function () {
                    lines: { show: true },
                    points: { show: false }
                },
-               grid: { hoverable: true, clickable: true},
+			   crosshair: {mode: "x" },
+               grid: { hoverable: false, clickable: true,autoHighlight: false},
                yaxis: { mode:" money", tickDecimals: 0, },
 			   y2axis: { tickDecimals: 0 },
-			   legend: { position: 'nw' }
+			   legend: { position: 'ne' }
              });
 
     function showTooltip(x, y, contents) {
@@ -95,9 +97,13 @@ $(function () {
 
     $("#placeholder").bind("plotclick", function (event, pos, item) {
         if (item) {
-            $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
-            plot.highlight(item.series, item.datapoint);
+            //flot.lockCrosshair({ x: item.datapoint[0], y: item.datapoint[1] });
+			$("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+            //plot.highlight(item.series, item.datapoint);
         }
+		else{
+			flot.unlockCrosshair();
+		}
     });
 });
 </script>
