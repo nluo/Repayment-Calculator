@@ -92,6 +92,7 @@ div{
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="flot/excanvas.min.js"></script><![endif]-->
 <script type="text/javascript" src="flot/jquery.js"></script>
 <script type="text/javascript" src="flot/jquery.flot.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.crosshair.js"></script>
 <script type="text/javascript">
 function calRepayment(str1,str2,str3,str4,str5)
 {
@@ -174,7 +175,10 @@ $(document).ready(function(){
 								}	
 							}
 						}
-						$.plot($("#placeholder"), 
+						
+						
+						
+						plot=$.plot($("#placeholder"), 
 						[ {
 							data: result1,
 						    color: "#06f206",
@@ -189,16 +193,56 @@ $(document).ready(function(){
 								lines: { show:true},
 								points: { show:false}
 								},
-							grid: { hoverable: true, clickable: true},
-							xaxis: { min: 0},
-							yaxis: { min: 0, tickDecimals:0, position:"right" } 
+							crosshair: { mode: "x", lineWidth:3 },
+							grid: { hoverable: true, autoHighlight: false},
+							xaxis: { min: 0, tickDecimals:0},
+							yaxis: { min: 0, position:"right" } 
 							});
-						
+							
+							
+								
+						var legends = $("#placeholder.legendLabel");
+    					legends.each(function () {
+
+        				// fix the widths so they don't jump around
+
+        				$(this).css('width', $(this).width());
+
+    					});
+									
+						var updateLegendTimeout = null;
+
+    					var latestPosition = null;
+
+    
+
+    					function updateLegend() {
+
+        					updateLegendTimeout = null;
+        					var pos = latestPosition;
+        
+							var axes = plot.getAxes();
+
+        					if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+
+            				return;
+							//alert(axes.xaxis.max);
+			
+							
+						}
 						
 						$("#placeholder").bind("plothover", function (event, pos, item) {
-							var value1=result1[item.datapoint[0]][1];
-							var value2=result2[item.datapoint[0]][1];
-							var value3=20-item.datapoint[0];
+							latestPosition = pos;
+							if (!updateLegendTimeout)
+            					updateLegendTimeout = setTimeout(updateLegend, 50);
+							
+							//var value1=result1[item.datapoint[0]][1];
+							//var value2=result2[item.datapoint[0]][1];
+														var value1=result1[Math.round(pos.x)][1];
+							var value2=result2[Math.round(pos.x)][1];
+							var value3=mortgage-Math.round(pos.x);
+							var value3=mortgage-item.datapoint[0];
+							//alert(mortgage);
 							if (value2<=0||value1<=0){
 								value1=1;
 								value2=1;}
@@ -239,7 +283,7 @@ $(document).ready(function(){
                     Loan amount:
                     </div>
                     <div id="_amount_box" style="float:right;">
-                    $&nbsp;<input type="text" name="amount" size="13" value="50000" style="margin-right:59px; margin-top:10px;" />
+                    $&nbsp;<input type="text" class="input_detail" name="amount" size="13" value="50000" style="margin-right:59px; margin-top:10px;" />
                     </div>
                 </div>
                 <div id="_mortgage">
@@ -247,7 +291,7 @@ $(document).ready(function(){
                     Mortgage term you prefer<br /> (0~40)
                     </div>
                     <div id="_mortgage_box"  style="float:right; margin-right:12px;">
-                    <input type="number" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
+                    <input type="number" class="input_detail" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
                     </div>
                 </div>
                 <div id="_interest_rate">
@@ -255,7 +299,7 @@ $(document).ready(function(){
                     Interest rate you prefer<br /> (3.00~8.00)
                     </div>
                     <div id="_interest_rate_box" style="float:right; margin-right:46px;">
-                    <input type="number" name="interest" min="3.00" max="8.00" step="0.01" value="6" size="13" />%
+                    <input type="number" class="input_detail" name="interest" min="3.00" max="8.00" step="0.01" value="5" size="13" />%
                     </div>
                 </div>
                 <div id="_RFrequency">
@@ -263,7 +307,7 @@ $(document).ready(function(){
                     Repayment frequency
                     </div>
                     <div id="_RFrequency_box" style="float:right;">
-                        <select id="_RFrequency_value" name="frequency" style="width:136px; margin-right:37px; font-family:Calibri;">
+                        <select id="_RFrequency_value" class="input_detail" name="frequency" style="width:136px; margin-right:37px; font-family:Calibri;">
                             <option>Weekly</option>
                             <option>Fortnightly</option>
                             <option>Monthly</option>
@@ -275,7 +319,7 @@ $(document).ready(function(){
                     Repayment type
                     </div>
                     <div id="_RType_box" style="float:right;">
-                        <select id="_RType_value" name="rtype" style="margin-right:37px; font-family:Calibri;">
+                        <select id="_RType_value" class="input_detail" name="rtype" style="margin-right:37px; font-family:Calibri;">
                             <option>Principal & Interest</option>
                             <option>Interest Only</option>
                         </select>
@@ -312,6 +356,7 @@ $(document).ready(function(){
                 <div id="_box"></div>
                 </div>
             </div>
+            <div><span id="test_value_x"></span>,<span id="test_value_y"></span></div>
         </div>
 	</div>
 </body>
