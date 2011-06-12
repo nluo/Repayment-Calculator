@@ -138,10 +138,9 @@ $(document).ready(function(){
 <script type="text/javascript">
 				function drawgraph(amount,mortgage,interest,frequency,rtype){
 					
-					var payment=0,period=0,result1=[],result2=[];
 					
 					$(function(){
-						
+						var payment=0,period=0,result1=[],result2=[];
 						if (frequency=="Weekly"){
 							period=52;
 						}
@@ -192,6 +191,11 @@ $(document).ready(function(){
 						    color: "#06f206",
 						   lines: {  show: true, fill: true } 
 						   },
+						   {
+							   data: result2,
+							   color:"#028802",
+							   lines: {  show: true, fill: true } 
+						   }
 						   ], 
 						   
 						   { 
@@ -201,7 +205,7 @@ $(document).ready(function(){
 								},
 
 							crosshair: { mode: "x", lineWidth:3 },
-							grid: { clickable: true, autoHighlight: true},
+							grid: { hoverable:true, clickable: true, autoHighlight: false},
 							xaxis: { min: 0, tickDecimals:0},
 							yaxis: { min: 0, 
 									position:"right" ,
@@ -248,27 +252,12 @@ $(document).ready(function(){
 
             				return;
 							//alert(axes.xaxis.max);
-			
 							
-						}
-						
-						$("#placeholder").bind("plotclick", function (event, pos, item) {
-							alert("You clicked at " + pos.x + ", " + pos.y);
-							latestPosition = pos;
-							   if (item) {
-									  highlight(item.series, item.datapoint);
-									  alert("You clicked a point!");
-									}
-							if (!updateLegendTimeout)
-            					updateLegendTimeout = setTimeout(updateLegend, 50);
 							
-							//var value1=result1[item.datapoint[0]][1];
-							//var value2=result2[item.datapoint[0]][1];
-														var value1=result1[Math.round(pos.x)][1];
+							var value1=result1[Math.round(pos.x)][1];
 							var value2=result2[Math.round(pos.x)][1];
 							var value3=mortgage-Math.round(pos.x);
-							var value3=mortgage-item.datapoint[0];
-							//alert(mortgage);
+							
 							if (value2<=0||value1<=0){
 								value1=1;
 								value2=1;}
@@ -285,6 +274,44 @@ $(document).ready(function(){
 								$("#_box").width(0);
 								}
 							$("#_remain_year").text(value3);
+						}
+						//alert (result1.length);
+						$("#placeholder").bind("plothover", function (event, pos, item) {
+							//alert("You clicked at " + pos.x + ", " + pos.y);
+							
+							
+							/*var value1=result1[Math.round(pos.x)][1];
+							var value2=result2[Math.round(pos.x)][1];
+							var value3=mortgage-Math.round(pos.x);
+							//var value3=mortgage-item.datapoint[0];
+							//alert(mortgage);
+							if (value2<=0||value1<=0){
+								value1=1;
+								value2=1;}
+							var test=value2/value1*100;
+							var value=value2/value1*250;
+							if (rtype=="Principal & Interest"){
+								$("#x").text(Math.round(test)+"% home laon");
+								$("#y").text(Math.round(100-test)+"% interest");
+								$("#_box").width(value);
+							}
+							else if(rtype=="Interest Only"){
+								$("#x").text("0% home loan");
+								$("#y").text("100% interest");
+								$("#_box").width(0);
+								}
+							$("#_remain_year").text(value3);*/
+							latestPosition = pos;
+							   if (item) {
+									  highlight(item.series, item.datapoint);
+									  alert("You clicked a point!");
+									}
+							if (!updateLegendTimeout)
+            					updateLegendTimeout = setTimeout(updateLegend, 50);
+							
+							//var value1=result1[item.datapoint[0]][1];
+							//var value2=result2[item.datapoint[0]][1];
+							
 						});
 						});
 					
@@ -382,7 +409,6 @@ $(document).ready(function(){
                 <div id="_box"></div>
                 </div>
             </div>
-            <div><span id="test_value_x"></span>,<span id="test_value_y"></span></div>
         </div>
 	</div>
 </body>
