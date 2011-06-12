@@ -122,6 +122,7 @@ function calRepayment(str1,str2,str3,str4,str5)
 }
 
 $(document).ready(function(){
+
   $("#loan_amout").val('600000');
   var loan_amount=$("#loan_amout").val();
  
@@ -136,6 +137,7 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 				function drawgraph(amount,mortgage,interest,frequency,rtype){
+					
 					var payment=0,period=0,result1=[],result2=[];
 					
 					$(function(){
@@ -160,7 +162,7 @@ $(document).ready(function(){
 							if (rtype=="Principal & Interest"){
 								result1.push([i,Math.round(total_repayment-i*payment*period)]);
 							}
-							else if (rtype=="Interest Only"){
+							if (rtype=="Interest Only"){
 								result1.push([i,Math.round(interest_only_total_repayment-i*interest_only_payment*period)])}
 							}
 						
@@ -174,7 +176,7 @@ $(document).ready(function(){
 									result2.push([j/period,Math.round(a4)]);
 								}
 							}
-							else if (rtype=="Interest Only"){
+							if (rtype=="Interest Only"){
 								if (j%period==0){
 									result2.push([j/period,amount]);
 								}	
@@ -182,6 +184,7 @@ $(document).ready(function(){
 						}
 						
 						
+						var plot;
 						
 						plot=$.plot($("#placeholder"), 
 						[ {
@@ -189,11 +192,7 @@ $(document).ready(function(){
 						    color: "#06f206",
 						   lines: {  show: true, fill: true } 
 						   },
-						   {
-							   data: result2,
-							   color:"#028802",
-							   lines: {  show: true, fill: true } 
-						   }], 
+						   ], 
 						   
 						   { 
 							series:{
@@ -202,7 +201,7 @@ $(document).ready(function(){
 								},
 
 							crosshair: { mode: "x", lineWidth:3 },
-							grid: { hoverable: true, autoHighlight: false},
+							grid: { clickable: true, autoHighlight: true},
 							xaxis: { min: 0, tickDecimals:0},
 							yaxis: { min: 0, 
 									position:"right" ,
@@ -220,8 +219,8 @@ $(document).ready(function(){
 														}
 									}
 							});
-							
-							
+							var series = plot.getData();
+					
 								
 						var legends = $("#placeholder.legendLabel");
     					legends.each(function () {
@@ -253,8 +252,13 @@ $(document).ready(function(){
 							
 						}
 						
-						$("#placeholder").bind("plothover", function (event, pos, item) {
+						$("#placeholder").bind("plotclick", function (event, pos, item) {
+							alert("You clicked at " + pos.x + ", " + pos.y);
 							latestPosition = pos;
+							   if (item) {
+									  highlight(item.series, item.datapoint);
+									  alert("You clicked a point!");
+									}
 							if (!updateLegendTimeout)
             					updateLegendTimeout = setTimeout(updateLegend, 50);
 							
