@@ -201,7 +201,7 @@ $(document).ready(function(){
 								},
 
 							crosshair: { mode: "x", lineWidth:3 },
-							grid: { clickable: true, autoHighlight: true},
+							grid: { hoverable: true, autoHighlight: true},
 							xaxis: { min: 0, tickDecimals:0},
 							yaxis: { min: 0, 
 									position:"right" ,
@@ -252,7 +252,7 @@ $(document).ready(function(){
 							
 						}
 						
-						$("#placeholder").bind("plotclick", function (event, pos, item) {
+						$("#placeholder").bind("plothoverable", function (event, pos, item) {
 							alert("You clicked at " + pos.x + ", " + pos.y);
 							latestPosition = pos;
 							   if (item) {
