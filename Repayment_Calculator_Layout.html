@@ -138,7 +138,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 				function drawgraph(amount,mortgage,interest,frequency,rtype){
 					
-					
+					var plot;
 					$(function(){
 						var payment=0,period=0,result1=[],result2=[];
 						if (frequency=="Weekly"){
@@ -183,32 +183,31 @@ $(document).ready(function(){
 						}
 						
 						
-						var plot;
+						
 						
 						plot=$.plot($("#placeholder"), 
 						[ {
 							data: result1,
 						    color: "#06f206",
-						   lines: {  show: true, fill: true } 
+						   lines: {  fill: true } 
 						   },
 						   {
 							   data: result2,
 							   color:"#028802",
-							   lines: {  show: true, fill: true } 
+							   lines: {   fill: true } 
 						   }
 						   ], 
 						   
 						   { 
 							series:{
-								lines: { show:true},
-								points: { show:false}
+								lines: { show:true}
 								},
 
-							crosshair: { mode: "x", lineWidth:3 },
 
-							grid: { hoverable:true, clickable: true, autoHighlight: false},
+							crosshair: { mode: "x", lineWidth:10 },
+							grid: { hoverable:true, autoHighlight: false},
+							//xaxis: { min: 0},
 
-							xaxis: { min: 0, tickDecimals:0},
 							yaxis: { min: 0, 
 									position:"left" ,
 									tickFormatter: function(val,axis){
@@ -225,7 +224,6 @@ $(document).ready(function(){
 														}
 									}
 							});
-							var series = plot.getData();
 					
 								
 						var legends = $("#placeholder.legendLabel");
@@ -253,7 +251,6 @@ $(document).ready(function(){
         					//if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
 
             				//return;
-							$("#test_value").text(mortgage);
 							
 							
 							var value1=result1[Math.round(pos.x)][1];
@@ -283,10 +280,10 @@ $(document).ready(function(){
 						
 						$("#placeholder").bind("plothover", function (event, pos, item) {							
 							latestPosition = pos;
-							   if (item) {
+							   /*if (item) {
 									  highlight(item.series, item.datapoint);
 									  alert("You clicked a point!");
-									}
+									}*/
 							if (!updateLegendTimeout)
             					updateLegendTimeout = setTimeout(updateLegend, 50);
 							
@@ -387,7 +384,6 @@ $(document).ready(function(){
                 <div id="_box"></div>
                 </div>
             </div>
-            <span id="test_value"></span>
         </div>
 	</div>
 </body>
