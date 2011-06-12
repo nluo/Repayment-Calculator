@@ -208,7 +208,7 @@ $(document).ready(function(){
 							grid: { hoverable:true, clickable: true, autoHighlight: false},
 							xaxis: { min: 0, tickDecimals:0},
 							yaxis: { min: 0, 
-									position:"right" ,
+									position:"left" ,
 									tickFormatter: function(val,axis){
 														if(val>=1000000)
 															return (val/1000000).toFixed(2)+"M";
@@ -248,10 +248,10 @@ $(document).ready(function(){
         
 							var axes = plot.getAxes();
 
-        					if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
+        					//if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||pos.y < axes.yaxis.min || pos.y > axes.yaxis.max)
 
-            				return;
-							//alert(axes.xaxis.max);
+            				//return;
+							$("#test_value").text(mortgage);
 							
 							
 							var value1=result1[Math.round(pos.x)][1];
@@ -275,32 +275,12 @@ $(document).ready(function(){
 								}
 							$("#_remain_year").text(value3);
 						}
-						//alert (result1.length);
+						
+						
+						
+						
 						$("#placeholder").bind("plothover", function (event, pos, item) {
-							//alert("You clicked at " + pos.x + ", " + pos.y);
 							
-							
-							/*var value1=result1[Math.round(pos.x)][1];
-							var value2=result2[Math.round(pos.x)][1];
-							var value3=mortgage-Math.round(pos.x);
-							//var value3=mortgage-item.datapoint[0];
-							//alert(mortgage);
-							if (value2<=0||value1<=0){
-								value1=1;
-								value2=1;}
-							var test=value2/value1*100;
-							var value=value2/value1*250;
-							if (rtype=="Principal & Interest"){
-								$("#x").text(Math.round(test)+"% home laon");
-								$("#y").text(Math.round(100-test)+"% interest");
-								$("#_box").width(value);
-							}
-							else if(rtype=="Interest Only"){
-								$("#x").text("0% home loan");
-								$("#y").text("100% interest");
-								$("#_box").width(0);
-								}
-							$("#_remain_year").text(value3);*/
 							latestPosition = pos;
 							   if (item) {
 									  highlight(item.series, item.datapoint);
@@ -308,9 +288,6 @@ $(document).ready(function(){
 									}
 							if (!updateLegendTimeout)
             					updateLegendTimeout = setTimeout(updateLegend, 50);
-							
-							//var value1=result1[item.datapoint[0]][1];
-							//var value2=result2[item.datapoint[0]][1];
 							
 						});
 						});
@@ -409,6 +386,7 @@ $(document).ready(function(){
                 <div id="_box"></div>
                 </div>
             </div>
+            <span id="test_value"></span>
         </div>
 	</div>
 </body>
