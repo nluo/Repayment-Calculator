@@ -93,6 +93,8 @@ div{
 <script type="text/javascript" src="flot/jquery.js"></script>
 <script type="text/javascript" src="flot/jquery.flot.js"></script>
 <script type="text/javascript" src="flot/jquery.flot.crosshair.js"></script>
+<script type="text/javascript" src="jquery.numberformatter.js"></script>
+<script src="jquery.alphanumeric.plus.js" type="text/javascript"></script>
 <script type="text/javascript">
 function calRepayment(str1,str2,str3,str4,str5)
 {
@@ -123,12 +125,55 @@ function calRepayment(str1,str2,str3,str4,str5)
 
 $(document).ready(function(){
 
-  $("#loan_amout").val('600000');
-  var loan_amount=$("#loan_amout").val();
+	 $(".decimal").decimal();
+   $(".numeric").numeric();
+
+   $.fn.format.defaults.locale = "au";
+   $.fn.parse.defaults.locale = "au";
+
+  $("#loan_amount").val('600000');
+  //var loan_amount=$("#loan_amount").val();
+  
+ 
  
  $("#button1").click(function(){
-	$("#placeholder").hide();
-    $("#placeholder").slideDown();
+	
+	var loan_amount=$("#loan_amount").parse();
+	var loan_year=$("#loan_year").parse();
+	var frequency=$("#loan_repaymentFrequency").val();
+	var loan_repaymentType=$("#loan_repaymentType").val();
+	var loan_interest=$("#loan_interest").parse();
+
+	var period=0; var power=0; var term_interest=0; var payment=0;
+	
+	if (frequency=="Weekly"){
+		period=52;
+		}
+	if (frequency=="Fortnightly"){
+		period=26;
+		}
+	if (frequency=="Monthly"){
+		period=12;
+		}
+	
+	power=loan_year*period;
+	
+	term_interest=loan_interest/(period*100);
+	//alert(term_interest);
+	payment=Math.round(loan_amount*term_interest*Math.pow((1+term_interest),power)/(Math.pow((1+term_interest),power)-1));
+
+	/*$text = "{\n".'"amount": "'.$amount.'",'."\n".'"mortgage": "'.$mortgage.'",'."\n".'"interest": "'.$interest.'",'."\n".'"frequency": "'.$frequency.'",'."\n".'"rtype": "'.$rtype.'",'."\n".'"payment": "'.$payment.'"'."\n}";
+
+	file_put_contents('Result.json', $text);
+	*/
+
+	$("#_mortgage_repayment_pay").html(function(){
+										return "Your "+frequency.toLowerCase()+" mortgage repayment is<br /><h2>"+"$"+payment+"</h2>";
+										}
+										);
+
+	//echo "Your ".strtolower(frequency)." mortgage repayment<br /><h2>$".payment."</h2>";
+	
   });
   
 
@@ -311,7 +356,7 @@ $(document).ready(function(){
                     Loan amount:
                     </div>
                     <div id="_amount_box" style="float:right;">
-                    $&nbsp;<input id="loan_amout" type="text" class="input_detail" name="amount" size="13" style="margin-right:59px; margin-top:10px;" />
+                    $&nbsp;<input id="loan_amount" type="text" name="amount" size="13" style="margin-right:59px; margin-top:10px;" />
                     </div>
                 </div>
                 <div id="_mortgage">
@@ -319,7 +364,7 @@ $(document).ready(function(){
                     Mortgage term you prefer<br /> (0~40)
                     </div>
                     <div id="_mortgage_box"  style="float:right; margin-right:12px;">
-                    <input type="number" class="input_detail" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
+                    <input type="number" id="loan_year" class="input_detail" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
                     </div>
                 </div>
                 <div id="_interest_rate">
@@ -327,7 +372,7 @@ $(document).ready(function(){
                     Interest rate you prefer<br /> (3.00~8.00)
                     </div>
                     <div id="_interest_rate_box" style="float:right; margin-right:46px;">
-                    <input type="number" class="input_detail" name="interest" min="3.00" max="8.00" step="0.01" value="5" size="13" />%
+                    <input type="number" id="loan_interest" class="input_detail" name="interest" min="3.00" max="8.00" step="0.01" value="5" size="13" />%
                     </div>
                 </div>
                 <div id="_RFrequency">
@@ -335,7 +380,7 @@ $(document).ready(function(){
                     Repayment frequency
                     </div>
                     <div id="_RFrequency_box" style="float:right;">
-                        <select id="_RFrequency_value" class="input_detail" name="frequency" style="width:136px; margin-right:37px; font-family:Calibri;">
+                        <select id="loan_repaymentFrequency" class="input_detail" name="frequency" style="width:136px; margin-right:37px; font-family:Calibri;">
                             <option>Weekly</option>
                             <option>Fortnightly</option>
                             <option>Monthly</option>
@@ -347,14 +392,14 @@ $(document).ready(function(){
                     Repayment type
                     </div>
                     <div id="_RType_box" style="float:right;">
-                        <select id="_RType_value" class="input_detail" name="rtype" style="margin-right:37px; font-family:Calibri;">
+                        <select id="loan_repaymentType" class="input_detail" name="rtype" style="margin-right:37px; font-family:Calibri;">
                             <option>Principal & Interest</option>
                             <option>Interest Only</option>
                         </select>
                     </div>
                 </div>
                 <div id="_calculating">
-                <button type="button" id="button1" onClick="calRepayment(amount.value,mortgage.value,interest.value,frequency.value,rtype.value);drawgraph(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
+                <button type="button" id="button1" onClick="drawgraph(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
                 </form>
                 </div>
             </div>
