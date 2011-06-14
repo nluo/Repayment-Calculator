@@ -31,14 +31,14 @@ $(function () {
         sin.push([i, Math.sin(i)]);
         cos.push([i, Math.cos(i)]);
     }
-
+	var num=50;
     plot = $.plot($("#placeholder"),
                       [ { data: sin, label: "sin(x) = -0.00"},
                         { data: cos, label: "cos(x) = -0.00" } ], {
                             series: {
                                 lines: { show: true }
                             },
-                            crosshair: { mode: "x" },
+                            crosshair: { mode: "x" ,lineWidth: $(this).width()/num},
                             grid: { hoverable: true, autoHighlight: false },
                             yaxis: { min: -1.2, max: 1.2 }
                         });
@@ -52,6 +52,7 @@ $(function () {
     var latestPosition = null;
     
     function updateLegend() {
+		//(plot.width());
         updateLegendTimeout = null;
         
         var pos = latestPosition;
@@ -63,24 +64,28 @@ $(function () {
 
         var i, j, dataset = plot.getData();
         for (i = 0; i < dataset.length; ++i) {
-            var series = dataset[i];
-
+			//alert(dataset[i].color);
+			var series = dataset[i];
+			
+			//alert(series.data.length);
             // find the nearest points, x-wise
-            for (j = 0; j < series.data.length; ++j)
+            for (j = 0; j < series.data.length; ++j){
                 if (series.data[j][0] > pos.x)
                     break;
             
             // now interpolate
-            var y, p1 = series.data[j - 1], p2 = series.data[j];
-            if (p1 == null)
-                y = p2[1];
-            else if (p2 == null)
-                y = p1[1];
-            else
-                y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
+			
+				var y, p1 = series.data[j - 1], p2 = series.data[j];
+				if (p1 == null)
+					y = p2[1];
+				else if (p2 == null)
+					y = p1[1];
+				else
+					y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
 
-            legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
-        }
+				legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
+			}
+		}
     }
     
     $("#placeholder").bind("plothover",  function (event, pos, item) {
