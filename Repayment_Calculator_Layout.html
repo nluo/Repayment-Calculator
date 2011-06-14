@@ -93,8 +93,8 @@ div{
 <script type="text/javascript" src="flot/jquery.js"></script>
 <script type="text/javascript" src="flot/jquery.flot.js"></script>
 <script type="text/javascript" src="flot/jquery.flot.crosshair.js"></script>
-<script type="text/javascript" src="jquery.numberformatter.js"></script>
-<script src="jquery.alphanumeric.plus.js" type="text/javascript"></script>
+<!--script type="text/javascript" src="jquery.numberformatter.js"></script>
+<script src="jquery.alphanumeric.plus.js" type="text/javascript"></script-->
 <script type="text/javascript">
 function calRepayment(str1,str2,str3,str4,str5)
 {
@@ -125,11 +125,7 @@ function calRepayment(str1,str2,str3,str4,str5)
 
 $(document).ready(function(){
 
-	 $(".decimal").decimal();
-   $(".numeric").numeric();
-
-   $.fn.format.defaults.locale = "au";
-   $.fn.parse.defaults.locale = "au";
+	
 
   $("#loan_amount").val('600000');
   //var loan_amount=$("#loan_amount").val();
@@ -138,11 +134,11 @@ $(document).ready(function(){
  
  $("#button1").click(function(){
 	
-	var loan_amount=$("#loan_amount").parse();
-	var loan_year=$("#loan_year").parse();
+	var loan_amount=$("#loan_amount").val();
+	var loan_year=$("#loan_year").val();
 	var frequency=$("#loan_repaymentFrequency").val();
 	var loan_repaymentType=$("#loan_repaymentType").val();
-	var loan_interest=$("#loan_interest").parse();
+	var loan_interest=$("#loan_interest").val();
 
 	var period=0; var power=0; var term_interest=0; var payment=0;
 	
