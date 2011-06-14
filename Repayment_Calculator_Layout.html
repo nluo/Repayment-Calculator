@@ -103,18 +103,37 @@ $(document).ready(function(){
 
   $("#loan_amount").val('600000');
   //var loan_amount=$("#loan_amount").val();
+ 
   
- 
- 
- $("#button1").click(function(){
-	
-	var loan_amount=$("#loan_amount").val();
+  // initialise variables
+ 	var loan_amount=$("#loan_amount").val();
 	var loan_year=$("#loan_year").val();
 	var frequency=$("#loan_repaymentFrequency").val();
 	var loan_repaymentType=$("#loan_repaymentType").val();
 	var loan_interest=$("#loan_interest").val();
+	
+	calculateRepayment(loan_amount,loan_year,frequency,loan_repaymentType,loan_interest);
+	//drawGraph(loan_amount,loan_year,frequency,loan_repaymentType,loan_interest);
+ 
+ $("#button1").click(function(){
+	//update the form value
+	 loan_amount=$("#loan_amount").val();
+	 loan_year=$("#loan_year").val();
+	 frequency=$("#loan_repaymentFrequency").val();
+	 loan_repaymentType=$("#loan_repaymentType").val();
+	 loan_interest=$("#loan_interest").val();
+	 //call the function again
+	calculateRepayment(loan_amount,loan_year,frequency,loan_repaymentType,loan_interest);
+});
+	
+	
+  
 
-	var period=0; var power=0; var term_interest=0; var payment=0;
+});
+
+	function calculateRepayment(loan_amount,loan_year,frequency,loan_repaymentType,loan_interest){
+	
+		var period=0; var power=0; var term_interest=0; var payment=0;
 	
 	if (frequency=="Weekly"){
 		period=52;
@@ -138,21 +157,16 @@ $(document).ready(function(){
 	*/
 
 	$("#_mortgage_repayment_pay").html(function(){
-										return "Your "+frequency.toLowerCase()+" mortgage repayment is<br /><h2>"+"$"+payment+"</h2>";
-										}
-										);
-	drawgraph(loan_amount,loan_year,loan_interest,frequency,loan_repaymentType);
+				return "Your "+frequency.toLowerCase()+" mortgage repayment is<br /><h2>"+"$"+payment+"</h2>";
+										});
+	drawGraph(loan_amount,loan_year,loan_interest,frequency,loan_repaymentType);
 
 	//echo "Your ".strtolower(frequency)." mortgage repayment<br /><h2>$".payment."</h2>";
 	
-  });
-  
-
-});
-</script>
-
-<script type="text/javascript">
-				function drawgraph(amount,mortgage,interest,frequency,rtype){
+  }
+				
+	
+	function drawGraph(amount,mortgage,interest,frequency,rtype){
 					
 					var plot;
 					$(function(){
@@ -335,7 +349,7 @@ $(document).ready(function(){
                     Mortgage term you prefer<br /> (0~40)
                     </div>
                     <div id="_mortgage_box"  style="float:right; margin-right:12px;">
-                    <input type="number" id="loan_year" class="input_detail" name="mortgage" min="0"max="40" value="20" size="13"/>year(s)
+                    <input type="number" id="loan_year" class="input_detail" name="mortgage" min="0"max="40" value="30" size="13"/>year(s)
                     </div>
                 </div>
                 <div id="_interest_rate">
@@ -343,7 +357,7 @@ $(document).ready(function(){
                     Interest rate you prefer<br /> (3.00~8.00)
                     </div>
                     <div id="_interest_rate_box" style="float:right; margin-right:46px;">
-                    <input type="number" id="loan_interest" class="input_detail" name="interest" min="3.00" max="8.00" step="0.01" value="5" size="13" />%
+                    <input type="number" id="loan_interest" class="input_detail" name="interest" min="3.00" max="8.00" step="0.01" value="6.89" size="13" />%
                     </div>
                 </div>
                 <div id="_RFrequency">
