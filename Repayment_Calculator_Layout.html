@@ -167,6 +167,7 @@ $(document).ready(function(){
 										return "Your "+frequency.toLowerCase()+" mortgage repayment is<br /><h2>"+"$"+payment+"</h2>";
 										}
 										);
+	drawgraph(loan_amount,loan_year,loan_interest,frequency,loan_repaymentType);
 
 	//echo "Your ".strtolower(frequency)." mortgage repayment<br /><h2>$".payment."</h2>";
 	
@@ -395,7 +396,7 @@ $(document).ready(function(){
                     </div>
                 </div>
                 <div id="_calculating">
-                <button type="button" id="button1" onClick="drawgraph(amount.value,mortgage.value,interest.value,frequency.value,rtype.value)">Start Calculating!</button>
+                <button type="button" id="button1" >Start Calculating!</button>
                 </form>
                 </div>
             </div>
