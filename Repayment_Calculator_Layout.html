@@ -96,32 +96,6 @@ div{
 <!--script type="text/javascript" src="jquery.numberformatter.js"></script>
 <script src="jquery.alphanumeric.plus.js" type="text/javascript"></script-->
 <script type="text/javascript">
-function calRepayment(str1,str2,str3,str4,str5)
-{
-	var xmlhttp;
-	if (str1.length==0&&str2.length==0&&str3.length==0&&str4.length==0&&str5.length==0)
-  		{ 
-  			document.getElementById("_mortgage_repayment_pay").innerHTML="";
-  			return;
-  		}
-	if (window.XMLHttpRequest)
-  		{// code for IE7+, Firefox, Chrome, Opera, Safari
-  			xmlhttp=new XMLHttpRequest();
-  		}
-	else
-  		{// code for IE6, IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  		}
-	xmlhttp.onreadystatechange=function()
-  		{
-  			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    			{
-    				document.getElementById("_mortgage_repayment_pay").innerHTML=xmlhttp.responseText;
-    			}
-  		}
-	xmlhttp.open("GET","Calculate_repayment.php?amount="+str1+"&mortgage="+str2+"&interest="+str3+"&frequency="+str4+"&rtype="+str5,true);
-	xmlhttp.send();
-}
 
 $(document).ready(function(){
 
